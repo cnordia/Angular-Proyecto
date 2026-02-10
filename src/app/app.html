@@ -1,2 +1,18 @@
-<p>asd</p>
-<app-navegacion></app-navegacion>
+<div style="text-align: center; padding: 20px;">
+  <h1>Buscador de Artistas (Deezer)</h1>
+
+  <input #cajaBusqueda type="text" placeholder="Escribe un artista">
+  <button (click)="onBuscar(cajaBusqueda.value)">Buscar ahora</button>
+
+  <hr>
+
+  @if (artista()) {
+    <div>
+      <img [src]="artista().picture_medium" alt="Foto">
+      <h2>{{ artista().name }}</h2>
+      <p>Fans: {{ artista().nb_fan }}</p>
+    </div>
+  } @else {
+    <p>No se han encontrado datos o se está cargando...</p>
+  }
+</div>

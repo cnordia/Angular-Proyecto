@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavegacionComponent } from './navegacion/navegacion.component';
+import { Data } from './services/data';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,16 @@ import { NavegacionComponent } from './navegacion/navegacion.component';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('Angular-Proyect');
-  
-  cambiarNombre(){
-  this.title.set('!Angular con Vite es genial¡');
+  private data = inject(Data)
+
+  artista = this.data.datos;
+
+  onBuscar(nombre:string){
+    if(nombre.trim()){
+      this.data.buscarArtista(nombre);
+    }
+  }
+
 }
-}
+
 

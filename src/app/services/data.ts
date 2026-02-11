@@ -33,7 +33,16 @@ export class Data {
   }
 
   buscarTopCanciones(id_artista:string){
+    const url = this.urlBase + `/artist/${id_artista}/top`
+    const params = new HttpParams().set("limit",5);
+    this.hacerPeticionAPI(params,url)
 
+  }
+
+  buscarCancion(nombreCancion: string){
+    const url = this.urlBase + 'search/track'
+    const params = new HttpParams().set('q', nombreCancion).set('limit',1);
+    this.hacerPeticionAPI(params, url);
   }
   
 }

@@ -12,14 +12,23 @@ import { Data } from './services/data';
 export class App {
   private data = inject(Data)
 
-  artista = this.data.datos;
+  todos_los_datos = this.data.datos;
 
-  onBuscar(nombre:string){
-    if(nombre.trim()){
+  onBuscarArtista(nombre:string){
+    if(nombre.trim()){ //Si el usuario mete un campo vacío "" es falsy, por lo que no entra al if
       this.data.buscarArtista(nombre);
     }
   }
 
+  onBuscarTopCancionesArtista(id_artista: string){
+    this.data.buscarTopCanciones(id_artista);
+  }
+
+  onBuscarCancion(cancion:string){
+    if(cancion.trim()){
+      this.data.buscarCancion(cancion);
+    }
+  }
 }
 
 

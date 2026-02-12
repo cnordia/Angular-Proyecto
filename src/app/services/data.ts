@@ -13,7 +13,7 @@ export class Data {
   datos = signal<any>(null) //El signal actúa como un notificador al cambiar los valores usando .set() a todos los lugares donde se está usando
 
 
-  hacerPeticionAPI(params: HttpParams, url:string){
+  hacerPeticionAPI( url:string, params?: HttpParams){
     // Hacemos la petición GET
     //Ponemos solo {params} porque es la manera corta de decir (params:params)
     this.http.get(url, { params }).subscribe({
@@ -27,22 +27,27 @@ export class Data {
 
 
   buscarArtista(nombre: string) {
-    const url = this.urlBase + 'search/artist'
+    const url = this.urlBase + 'search/artist';
     const params = new HttpParams().set('q', nombre).set('limit', '1');
-    this.hacerPeticionAPI(params, url);
+    this.hacerPeticionAPI(url, params);
   }
 
   buscarTopCanciones(id_artista:string){
-    const url = this.urlBase + `/artist/${id_artista}/top`
+    const url = this.urlBase + `/artist/${id_artista}/top`;
     const params = new HttpParams().set("limit",5);
-    this.hacerPeticionAPI(params,url)
+    this.hacerPeticionAPI(url, params);
 
   }
 
   buscarCancion(nombreCancion: string){
-    const url = this.urlBase + 'search/track'
+    const url = this.urlBase + 'search/track';
     const params = new HttpParams().set('q', nombreCancion).set('limit',1);
-    this.hacerPeticionAPI(params, url);
+    this.hacerPeticionAPI(url, params);
+  }
+
+  generos(){
+    const url = this.urlBase+'genre';
+    this.hacerPeticionAPI(url);
   }
   
 }

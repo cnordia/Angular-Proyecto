@@ -1,11 +1,11 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavegacionComponent } from './navegacion/navegacion.component';
 import { Data } from './services/data';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavegacionComponent],
+  imports: [RouterOutlet,NavbarComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

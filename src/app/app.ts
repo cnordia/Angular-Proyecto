@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Data } from './services/data';
+import { Api } from './services/api';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   styleUrl: './app.scss'
 })
 export class App {
-  private data = inject(Data)
+  private data = inject(Api)
 
   todos_los_datos = this.data.datos;
 

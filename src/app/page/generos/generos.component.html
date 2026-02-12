@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <div class="row">
+    @for (item of generos(); track item.id) {
+      
+      <div class="col-12 col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm text-center">
+          <img [src]="item.picture_medium" class="card-img-top" [alt]="item.name">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <a [routerLink]="['/popuGeneros', item.id]" 
+             class="btn btn-primary">
+             Ver Top Canciones
+          </a>
+          </div>
+        </div>
+      </div>
+
+    } @empty {
+      <div class="col-12 text-center">
+        <p>Cargando géneros musicales...</p>
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+    }
+
+  </div>
+</div>

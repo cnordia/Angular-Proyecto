@@ -1,13 +1,13 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RespuestaAPI } from '../interface/data.interface';
+import { RespuestaAPI } from '../interface/api.interface';
 
 @Injectable({providedIn: 'root',})
 
-export class Data {
+export class Api {
   private http = inject(HttpClient);
 
-  private urlBase = '/deezer-api/';
+  private urlBase = 'deezer-api/';
   
 
   datos = signal<any>(null) //El signal actúa como un notificador al cambiar los valores usando .set() a todos los lugares donde se está usando
@@ -16,10 +16,12 @@ export class Data {
   hacerPeticionAPI( url:string, params?: HttpParams){
     // Hacemos la petición GET
     //Ponemos solo {params} porque es la manera corta de decir (params:params)
+
+    ////////Miarar como recogen los datos (resultado.tracks.data)
     this.http.get(url, { params }).subscribe({
       next: (resultado: any) => {
-        this.datos.set(resultado.data[0]);
-        console.log('Datos guardados:', resultado.data[0]);
+        this.datos.set(resultado.tracks.data);
+        console.log('Datos guardados:', resultado.tracks.data[0]);
       },
       error: (err) => console.error('Error en la API:', err)
     });
@@ -45,8 +47,14 @@ export class Data {
     this.hacerPeticionAPI(url, params);
   }
 
-  generos(){
+  obtenerGeneros(){
     const url = this.urlBase+'genre';
+    this.hacerPeticionAPI(url);
+  }
+
+  buscarArtistasdelGenero(id_genero:string){
+    const url = this.urlBase + 'chart/'+`${id_genero}`;
+    console.log(url)
     this.hacerPeticionAPI(url);
   }
   

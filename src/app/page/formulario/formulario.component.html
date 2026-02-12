@@ -1,0 +1,74 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+          <h3>📩 Contáctanos</h3>
+        </div>
+        
+        <div class="card-body p-4">
+          
+          <form [formGroup]="formularioContacto" (ngSubmit)="enviarFormulario()">
+            
+            <div class="mb-3">
+              <label class="form-label">Nombre Completo</label>
+              <input type="text" 
+                     class="form-control" 
+                     formControlName="nombre"
+                     [class.is-invalid]="formularioContacto.get('nombre')?.invalid && formularioContacto.get('nombre')?.touched">
+              
+              @if (tieneError('nombre', 'required')) {
+                <div class="text-danger small">El nombre es obligatorio.</div>
+              }
+              @if (tieneError('nombre', 'minlength')) {
+                <div class="text-danger small">Debe tener al menos 3 letras.</div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Correo Electrónico</label>
+              <input type="email" 
+                     class="form-control" 
+                     formControlName="email"
+                     [class.is-invalid]="formularioContacto.get('email')?.invalid && formularioContacto.get('email')?.touched">
+              
+              @if (tieneError('email', 'required')) {
+                <div class="text-danger small">El correo es obligatorio.</div>
+              }
+              @if (tieneError('email', 'email')) {
+                <div class="text-danger small">Introduce un correo válido (ej: hola@gmail.com).</div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Tu Mensaje</label>
+              <textarea class="form-control" 
+                        rows="4" 
+                        formControlName="mensaje"
+                        [class.is-invalid]="formularioContacto.get('mensaje')?.invalid && formularioContacto.get('mensaje')?.touched"></textarea>
+              
+              @if (tieneError('mensaje', 'required')) {
+                <div class="text-danger small">Escribe un mensaje.</div>
+              }
+              @if (tieneError('mensaje', 'minlength')) {
+                <div class="text-danger small">El mensaje es muy corto (mínimo 10 caracteres).</div>
+              }
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" 
+                      class="btn btn-primary" 
+                      [disabled]="formularioContacto.invalid">
+                Enviar Mensaje
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

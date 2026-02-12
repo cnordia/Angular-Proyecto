@@ -1,0 +1,23 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Artistas del Género</h1>
+  <div class="row">
+    @for (artista of artistasGenero(); track artista.id) {
+      
+      <div class="col-12 col-md-4 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm text-center">
+          <img [src]="artista.cover_medium" class="card-img-top" [alt]="artista.name">
+          <div class="card-body">
+            <h5 class="card-title">{{ artista.title }}</h5>
+          </div>
+        </div>
+      </div>
+
+    } @empty {
+      <div class="col-12 text-center">
+        <p>Cargando artistas...</p>
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+    }
+
+  </div>
+</div>

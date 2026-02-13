@@ -12,20 +12,40 @@ export class Api {
 
   datos = signal<any>(null) //El signal actúa como un notificador al cambiar los valores usando .set() a todos los lugares donde se está usando
 
+// rutaDatos puede ser: 'data', 'tracks.data', 'albums.data', o undefined
+hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
+  this.http.get(url, { params }).subscribe({
+    next: (resultado: any) => {
+      
+      let datosAProcesar = resultado;
 
-  hacerPeticionAPI( url:string, params?: HttpParams){
-    // Hacemos la petición GET
-    //Ponemos solo {params} porque es la manera corta de decir (params:params)
+      // PASO 1: Si hay ruta específica, navegamos por ella (ej: 'tracks' o 'tracks.data')
+      if (rutaDatos) {
+        const niveles = rutaDatos.split('.');
+        
+        for (const nivel of niveles) {
+          if (datosAProcesar && datosAProcesar[nivel]) {
+            // Sobrescribimos la variable para bajar un nivel
+            datosAProcesar = datosAProcesar[nivel];
+          }
+        }
+      }
 
-    ////////Miarar como recogen los datos (resultado.tracks.data)
-    this.http.get(url, { params }).subscribe({
-      next: (resultado: any) => {
-        this.datos.set(resultado.tracks.data);
-        console.log('Datos guardados:', resultado.tracks.data[0]);
-      },
-      error: (err) => console.error('Error en la API:', err)
-    });
-  }
+      // PASO 2: LA MAGIA (Auto-limpieza) ✨
+      // Independientemente de si hemos navegado o no, verificamos una última vez
+      // si lo que tenemos en la mano es un envoltorio { data: [...] }
+      if (datosAProcesar && datosAProcesar.data) {
+         console.log('🧹 Limpiando envoltorio .data automáticamente');
+         datosAProcesar = datosAProcesar.data;
+      }
+
+      // Guardamos el resultado final limpio
+      this.datos.set(datosAProcesar);
+      console.log('✅ Datos finales guardados:', datosAProcesar);
+    },
+    error: (err) => console.error('❌ Error en la API:', err)
+  });
+}
 
 
   buscarArtista(nombre: string) {
@@ -38,7 +58,12 @@ export class Api {
     const url = this.urlBase + `/artist/${id_artista}/top`;
     const params = new HttpParams().set("limit",5);
     this.hacerPeticionAPI(url, params);
+  }
 
+    buscarTopAlbumes(id_artista:string){
+    const url = this.urlBase + `/artist/${id_artista}/albums`;
+    const params = new HttpParams().set("limit",5);
+    this.hacerPeticionAPI(url, params);
   }
 
   buscarCancion(nombreCancion: string){
@@ -46,16 +71,21 @@ export class Api {
     const params = new HttpParams().set('q', nombreCancion).set('limit',1);
     this.hacerPeticionAPI(url, params);
   }
+  
+  obtenerGeneros() {
+    const url = this.urlBase + 'genre';
+    this.hacerPeticionAPI(url); 
 
-  obtenerGeneros(){
-    const url = this.urlBase+'genre';
-    this.hacerPeticionAPI(url);
   }
 
   buscarArtistasdelGenero(id_genero:string){
-    const url = this.urlBase + 'chart/'+`${id_genero}`;
-    console.log(url)
-    this.hacerPeticionAPI(url);
+    const url = this.urlBase + 'chart/'+`${id_genero}/tracks`;
+    this.hacerPeticionAPI(url, undefined, 'track.data');
+  }
+  
+  obtenerTopArtista(id: string) {
+  const url = this.urlBase + `artist/${id}/top`;
+  this.hacerPeticionAPI(url, undefined, 'data'); 
   }
   
 }

@@ -18,8 +18,4 @@ export class GenerosComponent implements OnInit {
     this.data.obtenerGeneros();
   }
 
-  onBuscarArtistasdelGenero(id_genero:string){
-    this.data.buscarArtistasdelGenero(id_genero);
-  }
-
 }

@@ -19,9 +19,9 @@ export class NavbarComponent {
   buscarInput(texto:string){
     if(texto.trim()){
 
-      //Busca en el localhost4400/listado y le pasa ciertos parámetros
+      //Busca en el localhost4400/buscar y le pasa ciertos parámetros
       //El navigate se encarga de verificar, entrar/salir si tiene permisos, "traduce" la url para que no haya problema, cambia la url sin recargar y quita una vista y pone otra
-      this.router.navigate(['/listado'],{queryParams: {q : texto}});
+      this.router.navigate(['/buscar'],{queryParams: {q : texto}});
       console.log('Buscando desde el menú: ', texto)
     }
   }

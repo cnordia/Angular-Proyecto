@@ -20,13 +20,13 @@
           <a class="nav-link" routerLink="/favoritos" routerLinkActive="active">Favoritos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
+          <a class="nav-link" routerLink="/formulario" routerLinkActive="active">Contacto</a>
         </li>
       </ul>
 
       <div class="d-flex" role="search">
-        <!-- <input #txtBuscar type="text" (keyup.enter)="buscar(txtBuscar.value)" class="form-control" placeholder="Buscar artista, canción..."> -->
-        <!-- <button (click)="buscar(txtBuscar.value)" class="btn btn-outline-success">Buscar</button> -->
+        <input #txtBuscar type="text" (keyup.enter)="buscarInput(txtBuscar.value)" class="form-control" placeholder="Buscar artista, canción..."> 
+        <button (click)="buscarInput(txtBuscar.value)" class="btn btn-outline-success">Buscar</button>
       </div>
 
     </div>

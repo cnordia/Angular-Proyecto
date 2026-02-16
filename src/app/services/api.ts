@@ -66,16 +66,14 @@ hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
     this.hacerPeticionAPI(url, params);
   }
 
-  buscarCancion(nombreCancion: string){
-    const url = this.urlBase + 'search/track';
-    const params = new HttpParams().set('q', nombreCancion).set('limit',1);
-    this.hacerPeticionAPI(url, params);
+  buscarCancion(idCancion: string){
+    const url = this.urlBase + 'track/'+ idCancion;
+    this.hacerPeticionAPI(url);
   }
   
   obtenerGeneros() {
     const url = this.urlBase + 'genre';
     this.hacerPeticionAPI(url); 
-
   }
 
   buscarArtistasdelGenero(id_genero:string){

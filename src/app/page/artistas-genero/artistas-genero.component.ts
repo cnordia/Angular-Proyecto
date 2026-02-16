@@ -26,6 +26,5 @@ export class ArtistasGeneroComponent {
       console.log("¡Han llegado los datos!", this.artistasGenero());
     });
   }
-
-
+  
 }

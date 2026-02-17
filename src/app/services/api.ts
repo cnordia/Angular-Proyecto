@@ -13,39 +13,39 @@ export class Api {
   datos = signal<any>(null) //El signal actúa como un notificador al cambiar los valores usando .set() a todos los lugares donde se está usando
 
 // rutaDatos puede ser: 'data', 'tracks.data', 'albums.data', o undefined
-hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
-  this.http.get(url, { params }).subscribe({
-    next: (resultado: any) => {
-      
-      let datosAProcesar = resultado;
-
-      // PASO 1: Si hay ruta específica, navegamos por ella (ej: 'tracks' o 'tracks.data')
-      if (rutaDatos) {
-        const niveles = rutaDatos.split('.');
+  hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
+    this.http.get(url, { params }).subscribe({
+      next: (resultado: any) => {
         
-        for (const nivel of niveles) {
-          if (datosAProcesar && datosAProcesar[nivel]) {
-            // Sobrescribimos la variable para bajar un nivel
-            datosAProcesar = datosAProcesar[nivel];
+        let datosAProcesar = resultado;
+
+        // PASO 1: Si hay ruta específica, navegamos por ella (ej: 'tracks' o 'tracks.data')
+        if (rutaDatos) {
+          const niveles = rutaDatos.split('.');
+          
+          for (const nivel of niveles) {
+            if (datosAProcesar && datosAProcesar[nivel]) {
+              // Sobrescribimos la variable para bajar un nivel
+              datosAProcesar = datosAProcesar[nivel];
+            }
           }
         }
-      }
 
-      // PASO 2: LA MAGIA (Auto-limpieza) ✨
-      // Independientemente de si hemos navegado o no, verificamos una última vez
-      // si lo que tenemos en la mano es un envoltorio { data: [...] }
-      if (datosAProcesar && datosAProcesar.data) {
-         console.log('🧹 Limpiando envoltorio .data automáticamente');
-         datosAProcesar = datosAProcesar.data;
-      }
+        // PASO 2: LA MAGIA (Auto-limpieza) ✨
+        // Independientemente de si hemos navegado o no, verificamos una última vez
+        // si lo que tenemos en la mano es un envoltorio { data: [...] }
+        if (datosAProcesar && datosAProcesar.data) {
+          console.log('🧹 Limpiando envoltorio .data automáticamente');
+          datosAProcesar = datosAProcesar.data;
+        }
 
-      // Guardamos el resultado final limpio
-      this.datos.set(datosAProcesar);
-      console.log('✅ Datos finales guardados:', datosAProcesar);
-    },
-    error: (err) => console.error('❌ Error en la API:', err)
-  });
-}
+        // Guardamos el resultado final limpio
+        this.datos.set(datosAProcesar);
+        console.log('✅ Datos finales guardados:', datosAProcesar);
+      },
+      error: (err) => console.error('❌ Error en la API:', err)
+    });
+  }
 
 
   buscarArtista(nombre: string) {
@@ -60,7 +60,7 @@ hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
     this.hacerPeticionAPI(url, params);
   }
 
-    buscarTopAlbumes(id_artista:string){
+  buscarTopAlbumes(id_artista:string){
     const url = this.urlBase + `/artist/${id_artista}/albums`;
     const params = new HttpParams().set("limit",5);
     this.hacerPeticionAPI(url, params);
@@ -81,9 +81,9 @@ hacerPeticionAPI(url: string, params?: HttpParams, rutaDatos?: string) {
     this.hacerPeticionAPI(url, undefined, 'track.data');
   }
   
-  obtenerTopArtista(id: string) {
-  const url = this.urlBase + `artist/${id}/top`;
-  this.hacerPeticionAPI(url, undefined, 'data'); 
+  obtenerTopArtista() {
+  const url = this.urlBase + `chart/0/artists`;
+  this.hacerPeticionAPI(url, undefined); 
   }
   
 }

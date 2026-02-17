@@ -1,0 +1,51 @@
+<div class="container text-center mt-5">
+  
+  <h2>🎧 Artista Destacado</h2>
+
+  @if (api.datos().length > 0) {
+    
+    <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
+
+      <button class="btn btn-outline-primary rounded-circle p-3" (click)="anterior()">
+        <i class="bi bi-chevron-left h4 m-0"></i>
+      </button>
+
+      <div class="card shadow-lg border-0" style="width: 18rem;">
+        
+        <img [src]="api.datos()[indiceActual()].picture_medium" 
+             class="card-img-top animacion-fade" 
+             [alt]="api.datos()[indiceActual()].name">
+        
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ api.datos()[indiceActual()].name }}</h5>
+          <p class="card-text text-muted">Posición #{{ indiceActual() + 1 }}</p>
+          
+          <a [routerLink]="['/artistasGenero', api.datos()[indiceActual()].id]" 
+             class="btn btn-primary w-100">
+            Ver Perfil
+          </a>
+        </div>
+      </div>
+
+      <button class="btn btn-outline-primary rounded-circle p-3" (click)="siguiente()">
+        <i class="bi bi-chevron-right h4 m-0"></i>
+      </button>
+
+    </div>
+
+    <div class="mt-3">
+      @for(item of api.datos(); track $index) {
+        <span class="d-inline-block rounded-circle mx-1" 
+              [class.bg-primary]="indiceActual() === $index"
+              [class.bg-secondary]="indiceActual() !== $index"
+              style="width: 10px; height: 10px; cursor: pointer;"
+              (click)="indiceActual.set($index)">
+        </span>
+      }
+    </div>
+
+  } @else {
+    <p>Cargando carrusel...</p>
+  }
+
+</div>

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Para el ngClass
+import emailjs from '@emailjs/browser';
 
 @Component({
   selector: 'app-formulario',
@@ -18,28 +19,45 @@ export class FormularioComponent {
     mensaje: ['', [Validators.required, Validators.minLength(10)]]
   });
 
-  enviarFormulario() {
+  async enviarFormulario() {
+    // A. Si el formulario está mal, mostramos los errores en rojo y paramos
     if (this.formularioContacto.invalid) {
-      // Si el formulario no es válido, marcamos todos los campos como "tocados" para que salgan los errores
       this.formularioContacto.markAllAsTouched();
       return;
     }
 
-    // AQUI ES DONDE SE ENVIARÍA EL EMAIL
-    const datos = this.formularioContacto.value;
-    console.log("Enviando correo con estos datos:", datos);
-    
-    // Simulación de envío (Angular por sí solo no envía emails, necesita un Backend o servicio como EmailJS)
-    alert(`¡Mensaje enviado! Gracias ${datos.nombre}, te contactaremos a ${datos.email}`);
-    
-    // Limpiamos el formulario
-    this.formularioContacto.reset();
+    try {
+      // B. Preparamos los datos para EmailJS
+      // Las claves (izquierda) deben coincidir con tu Template de EmailJS: {{nombre}}, {{email}}, etc.
+      const datosParaEmail = {
+        nombre: this.formularioContacto.value.nombre,
+        email: this.formularioContacto.value.email,
+        mensaje: this.formularioContacto.value.mensaje
+      };
+
+      // C. Enviamos el correo (Sustituye con TUS credenciales)
+      // emailjs.send(SERVICE_ID, TEMPLATE_ID, DATOS, PUBLIC_KEY)
+      await emailjs.send('service_8haxrrg', 'template_3hyxrip', datosParaEmail, '9P6EBqhgNOCbpzpIq');
+
+      // D. Éxito
+      console.log("✅ Correo enviado:", datosParaEmail);
+      alert('¡Mensaje enviado correctamente! Nos pondremos en contacto contigo.');
+      
+      // Limpiamos el formulario para que quede vacío
+      this.formularioContacto.reset();
+
+    } catch (error) {
+      // E. Error
+      console.error("❌ Error al enviar:", error);
+      alert('Hubo un error al enviar el mensaje. Por favor, inténtalo más tarde.');
+    }
   }
-  
-  // Getter para saber si un campo tiene error y fue tocado (para limpiar el HTML)
-  tieneError(campo: string, tipoError: string) {
+
+  // 4. Helper para limpiar el HTML (Devuelve true si hay error y el usuario tocó el campo)
+  tieneError(campo: string, tipoError: string): boolean {
     const control = this.formularioContacto.get(campo);
-    return control?.hasError(tipoError) && control?.touched;
+    // El '?' (optional chaining) evita que rompa si el campo no existe
+    return (control?.hasError(tipoError) && control?.touched) ?? false;
   }
 
 }

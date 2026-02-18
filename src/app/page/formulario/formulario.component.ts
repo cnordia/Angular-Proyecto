@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common'; // Para el ngClass
 import emailjs from '@emailjs/browser';
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule ],
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.scss',
 })
@@ -13,50 +13,49 @@ export class FormularioComponent {
 
   private fb = inject(FormBuilder); // Inyectamos el constructor de formularios
 
+
+  // Agrupamos todo el formulario para poder validarlo entero con formularioContacto.invalid
   formularioContacto = this.fb.group({
+    // Valorinicial, [Reaglas de validación]
     nombre: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     mensaje: ['', [Validators.required, Validators.minLength(10)]]
   });
 
   async enviarFormulario() {
-    // A. Si el formulario está mal, mostramos los errores en rojo y paramos
     if (this.formularioContacto.invalid) {
       this.formularioContacto.markAllAsTouched();
       return;
     }
 
     try {
-      // B. Preparamos los datos para EmailJS
-      // Las claves (izquierda) deben coincidir con tu Template de EmailJS: {{nombre}}, {{email}}, etc.
+      //Preparamos los datos para EmailJS
       const datosParaEmail = {
         nombre: this.formularioContacto.value.nombre,
         email: this.formularioContacto.value.email,
         mensaje: this.formularioContacto.value.mensaje
       };
 
-      // C. Enviamos el correo (Sustituye con TUS credenciales)
+      // Enviamos el correo con las credenciales de EmailJS (serviceID, templateID, datos, publicKey)
       // emailjs.send(SERVICE_ID, TEMPLATE_ID, DATOS, PUBLIC_KEY)
       await emailjs.send('service_8haxrrg', 'template_3hyxrip', datosParaEmail, '9P6EBqhgNOCbpzpIq');
 
-      // D. Éxito
-      console.log("✅ Correo enviado:", datosParaEmail);
-      alert('¡Mensaje enviado correctamente! Nos pondremos en contacto contigo.');
+      console.log("Correo enviado:", datosParaEmail);
+      alert('¡Mensaje enviado correctamente!');
       
-      // Limpiamos el formulario para que quede vacío
+      // Limpiamos el formulario
       this.formularioContacto.reset();
 
     } catch (error) {
-      // E. Error
-      console.error("❌ Error al enviar:", error);
-      alert('Hubo un error al enviar el mensaje. Por favor, inténtalo más tarde.');
+      console.error("Error al enviar:", error);
+      alert('Hubo un error al enviar el mensaje.');
     }
   }
 
   // 4. Helper para limpiar el HTML (Devuelve true si hay error y el usuario tocó el campo)
   tieneError(campo: string, tipoError: string): boolean {
     const control = this.formularioContacto.get(campo);
-    // El '?' (optional chaining) evita que rompa si el campo no existe
+    // El '?' evita que rompa si el campo no existe
     return (control?.hasError(tipoError) && control?.touched) ?? false;
   }
 

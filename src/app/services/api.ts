@@ -1,6 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RespuestaAPI } from '../interface/api.interface';
 
 @Injectable({providedIn: 'root',})
 
@@ -19,7 +18,6 @@ export class Api {
         
         let datosAProcesar = resultado;
 
-        // PASO 1: Si hay ruta específica, navegamos por ella (ej: 'tracks' o 'tracks.data')
         if (rutaDatos) {
           const niveles = rutaDatos.split('.');
           
@@ -31,26 +29,21 @@ export class Api {
           }
         }
 
-        // PASO 2: LA MAGIA (Auto-limpieza) ✨
-        // Independientemente de si hemos navegado o no, verificamos una última vez
-        // si lo que tenemos en la mano es un envoltorio { data: [...] }
+        // Como ultima opción si el resultado tiene una propiedad 'data', la usamos (esto es común en la API de Deezer)
         if (datosAProcesar && datosAProcesar.data) {
-          console.log('🧹 Limpiando envoltorio .data automáticamente');
           datosAProcesar = datosAProcesar.data;
         }
-
-        // Guardamos el resultado final limpio
         this.datos.set(datosAProcesar);
-        console.log('✅ Datos finales guardados:', datosAProcesar);
+        console.log('Datos finales guardados:', datosAProcesar);
       },
-      error: (err) => console.error('❌ Error en la API:', err)
+      error: (err) => console.error('Error en la API:', err)
     });
   }
 
 
   buscarArtista(nombre: string) {
-    const url = this.urlBase + 'search/artist';
-    const params = new HttpParams().set('q', nombre).set('limit', '1');
+    const url = this.urlBase + `search/artist/`;
+    const params = new HttpParams().set("q", nombre).set("limit",1);
     this.hacerPeticionAPI(url, params);
   }
 
@@ -84,6 +77,19 @@ export class Api {
   obtenerTopArtista() {
   const url = this.urlBase + `chart/0/artists`;
   this.hacerPeticionAPI(url, undefined); 
+  }
+
+
+  obtenerArtista(id: string) {
+  return this.http.get(`${this.urlBase}artist/${id}`);
+  }
+
+  obtenerTopCanciones(id: string) {
+    return this.http.get(`${this.urlBase}artist/${id}/top?limit=5`);
+  }
+
+  obtenerTopAlbumes(id: string) {
+    return this.http.get(`${this.urlBase}artist/${id}/albums`);
   }
   
 }

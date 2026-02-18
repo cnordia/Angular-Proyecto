@@ -1,27 +1,36 @@
 <div class="container mt-4">
-  <h2>Resultados de: <span class="text-primary">{{ terminoBusqueda }}</span></h2>
   
-  <div class="row mt-3">
-    @for (artista of api.datos(); track artista.id) {
-      <div class="col-6 col-md-3 mb-4">
-        <div class="card h-100 shadow-sm border-0">
+  @if (datos.datos()[0]) {
+
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-6 col-lg-4">
+        
+        <div class="card shadow-lg border-0">
           
-          <img [src]="artista.picture_medium" class="card-img-top" [alt]="artista.name">
+          <img [src]="datos.datos()[0].picture_medium" class="card-img-top" [alt]="datos.datos()[0].name">
           
           <div class="card-body text-center">
-            <h5 class="card-title">{{ artista.name }}</h5>
+            <h2 class="card-title fw-bold">{{ datos.datos()[0].name }}</h2>
             
-            <a [routerLink]="['/artista', artista.id]" class="btn btn-primary btn-sm w-100">
-              Ver Canciones
+            <p class="text-muted">
+              {{ datos.datos()[0].nb_fan }} Fans
+            </p>
+
+            <a [routerLink]="['/artista', datos.datos()[0].id]" class="btn btn-primary w-100 rounded-pill">
+              Ver Perfil Completo
             </a>
           </div>
 
         </div>
+
       </div>
-    } @empty {
-      <div class="col-12 text-center mt-5">
-        <p class="text-muted">No encontramos artistas con ese nombre 😢</p>
-      </div>
-    }
-  </div>
+    </div>
+
+  } @else {
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary"></div>
+      <p>Cargando artista...</p>
+    </div>
+  }
+
 </div>

@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal}from '@angular/core';
+import { Component, inject, OnInit, signal}from '@angular/core';
 import { Api } from '../../services/api';
 import { RouterLink } from '@angular/router';
 
@@ -11,35 +11,25 @@ import { RouterLink } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 
-  
-  public api = inject(Api)  
+  public datos = inject(Api)  
 
   indiceActual = signal<number>(0);
 
-  constructor(){
-    effect(() =>{
-      console.log('////////////////////',this.api.datos(),'///')
-    })
-  }
-
   ngOnInit() {
-    this.api.obtenerTopArtista(); // Llena api.datos()
+    this.datos.obtenerTopArtista();
   }
 
-  // 2. FUNCIÓN SIGUIENTE (Derecha) ->
   siguiente() {
-    const total = this.api.datos().length;
-    // this.indiceActual.update(i => i + 1); // Esto es lo básico
+    const total = this.datos.datos().length;
     
-    // Esto es lo PRO (Bucle Infinito): Si llegas al final, vuelve al 0
+    // Si llegas al final, vuelve al 0
     this.indiceActual.update(i => (i + 1) % total); 
   }
 
-  // 3. FUNCIÓN ANTERIOR (Izquierda) <-
   anterior() {
-    const total = this.api.datos().length;
-    // Truco matemático para que al restar 0 - 1 no de negativo, sino el último
-    this.indiceActual.update(i => (i - 1 + total) % total);
+    const total = this.datos.datos().length;
+    // Al restar 0 - 1 no de negativo, sino el último
+    this.indiceActual.update(i => (i - 1 + total) % total); //update cambia su valor basandose en el anterior y el total para que no se salga del rango de índices disponibles
   }
 
 }

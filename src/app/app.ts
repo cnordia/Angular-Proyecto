@@ -11,25 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
   styleUrl: './app.scss'
 })
 export class App {
-  private data = inject(Api)
 
-  todos_los_datos = this.data.datos;
-
-  onBuscarArtista(nombre:string){
-    if(nombre.trim()){ //Si el usuario mete un campo vacío "" es falsy, por lo que no entra al if
-      this.data.buscarArtista(nombre);
-    }
-  }
-
-  onBuscarTopCancionesArtista(id_artista: string){
-    this.data.buscarTopCanciones(id_artista);
-  }
-
-  onBuscarCancion(cancion:string){
-    if(cancion.trim()){
-      this.data.buscarCancion(cancion);
-    }
-  }
 }
 
 

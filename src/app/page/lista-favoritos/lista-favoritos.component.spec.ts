@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PopuGeneroComponent } from './popu-genero.component';
+import { ListaFavoritosComponent } from './lista-favoritos.component';
 
-describe('PopuGeneroComponent', () => {
-  let component: PopuGeneroComponent;
-  let fixture: ComponentFixture<PopuGeneroComponent>;
+describe('ListaFavoritosComponent', () => {
+  let component: ListaFavoritosComponent;
+  let fixture: ComponentFixture<ListaFavoritosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopuGeneroComponent]
+      imports: [ListaFavoritosComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PopuGeneroComponent);
+    fixture = TestBed.createComponent(ListaFavoritosComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

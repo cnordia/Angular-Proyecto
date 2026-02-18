@@ -20,11 +20,5 @@ export class ArtistasGeneroComponent {
     if(idGenero)
       this.data.buscarArtistasdelGenero(idGenero);
   }
-  constructor() {
-    // 2. El espía: Se ejecutará automáticamente cuando los datos lleguen de internet
-    effect(() => {
-      console.log("¡Han llegado los datos!", this.artistasGenero());
-    });
-  }
   
 }

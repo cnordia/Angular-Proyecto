@@ -1,0 +1,33 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Mis Artistas Favoritos</h2>
+
+  @if (misArtistas.length > 0) {
+    <div class="row g-4">
+      @for (artista of misArtistas; track artista.id) {
+        <div class="col-6 col-md-3">
+          <div class="card h-100 shadow-sm border-0 position-relative">
+            
+            <button (click)="eliminar(artista.id)" 
+                    class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 rounded-circle">
+                x
+            </button>
+
+            <img [src]="artista.picture_medium" 
+                 class="card-img-top cursor-pointer" 
+                 [routerLink]="['/artista', artista.id]"
+                 style="cursor: pointer;">
+            
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ artista.name }}</h5>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="alert alert-info text-center">
+      No tienes favoritos aún. ¡Ve a buscar artistas y dales amor! 💔
+    </div>
+  }
+</div>

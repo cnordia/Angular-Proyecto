@@ -1,48 +1,40 @@
 <div class="container text-center mt-5">
-  
-  <h2>🎧 Artista Destacado</h2>
 
-  @if (api.datos().length > 0) {
+  <h1 class="display-4 fw-bold">¡Bienvenido a MusicaApp! 🎵</h1>
+  <h5 class="text-muted mx-auto" style="max-width: 600px;">
+      Esto es una aplicación web creada por Carlos Norte, la cual ha hecho en Anular usando la API de Deezer para mostrar 
+      información sobre artistas, álbumes y canciones.
+  </h5>
+
+
+  <h2>Artistas Destacados</h2>
+
+  @if (datos.datos().length > 0) {
     
-    <div class="d-flex align-items-center justify-content-center gap-4 mt-4">
+    <div class="d-flex align-items-center justify-content-center gap-4 mt-4 mb-5">
 
-      <button class="btn btn-outline-primary rounded-circle p-3" (click)="anterior()">
-        <i class="bi bi-chevron-left h4 m-0"></i>
-      </button>
+      <button class="btn btn-outline-primary rounded-circle p-3" (click)="anterior()"><</button>
 
       <div class="card shadow-lg border-0" style="width: 18rem;">
         
-        <img [src]="api.datos()[indiceActual()].picture_medium" 
-             class="card-img-top animacion-fade" 
-             [alt]="api.datos()[indiceActual()].name">
+        <img [src]="datos.datos()[indiceActual()].picture_medium" 
+             class="card-img-top" 
+             [alt]="datos.datos()[indiceActual()].name">
         
         <div class="card-body">
-          <h5 class="card-title fw-bold">{{ api.datos()[indiceActual()].name }}</h5>
-          <p class="card-text text-muted">Posición #{{ indiceActual() + 1 }}</p>
+          <h5 class="card-title fw-bold">{{ datos.datos()[indiceActual()].name }}</h5>
+          <p class="card-text text-muted">Posición {{ indiceActual() + 1 }}</p>
           
-          <a [routerLink]="['/artistasGenero', api.datos()[indiceActual()].id]" 
+          <a [routerLink]="['/artista', datos.datos()[indiceActual()].id]" 
              class="btn btn-primary w-100">
             Ver Perfil
           </a>
         </div>
       </div>
 
-      <button class="btn btn-outline-primary rounded-circle p-3" (click)="siguiente()">
-        <i class="bi bi-chevron-right h4 m-0"></i>
-      </button>
-
+      <button class="btn btn-outline-primary rounded-circle p-3" (click)="siguiente()">></button>
     </div>
 
-    <div class="mt-3">
-      @for(item of api.datos(); track $index) {
-        <span class="d-inline-block rounded-circle mx-1" 
-              [class.bg-primary]="indiceActual() === $index"
-              [class.bg-secondary]="indiceActual() !== $index"
-              style="width: 10px; height: 10px; cursor: pointer;"
-              (click)="indiceActual.set($index)">
-        </span>
-      }
-    </div>
 
   } @else {
     <p>Cargando carrusel...</p>
